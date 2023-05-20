@@ -29,6 +29,7 @@ ls(char *path)
   int fd;
   struct dirent de;
   struct stat st;
+  char* target = path; 
 
   // open < 0 means failure 
   if((fd = open(path, 0)) < 0){
@@ -44,11 +45,17 @@ ls(char *path)
     return;
   }
 
+
   // based on stat type 
   switch(st.type){
   case T_DEVICE:
   case T_FILE:
-    printf("%s %d %d %l\n", fmtname(path), st.type, st.ino, st.size); // if stat is a file, print the file 
+    if (strcmp(fmtname(path), target) == 0) {
+        printf("%s %d %d %l\n", fmtname(path), st.type, st.ino, st.size); // if stat is a file, print the file 
+
+        
+    }
+    printf("%sa %sa\n", fmtname(path), target); 
     break;
 
   case T_DIR:
@@ -75,6 +82,7 @@ ls(char *path)
   }
   close(fd);
 }
+
 
 int
 main(int argc, char *argv[])
