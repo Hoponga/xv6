@@ -1,0 +1,5 @@
+Question 1. 
+kernel/trap.c called syscall.c 
+The value of p->trapframe->a7 is 7
+I believe CPU was in user mode before as SPP bit is 0 but I'm not sure because $sstatus register doesn't align with 
+privileged instruction manual. 

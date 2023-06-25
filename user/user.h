@@ -9,6 +9,7 @@ int write(int, const void*, int);
 int read(int, void*, int);
 int close(int);
 int kill(int);
+int trace(uint64); 
 int exec(const char*, char**);
 int open(const char*, int);
 int mknod(const char*, short, short);

@@ -295,6 +295,8 @@ fork(void)
     return -1;
   }
   np->sz = p->sz;
+  // copy the trace mask to child proc
+  np->traced_syscalls = p->traced_syscalls; 
 
   // copy saved user registers.
   *(np->trapframe) = *(p->trapframe);
@@ -432,6 +434,18 @@ wait(uint64 addr)
     // Wait for a child to exit.
     sleep(p, &wait_lock);  //DOC: wait-sleep
   }
+}
+
+
+// Sets the current kernel's proc's trace-masking field to 
+// contain bits corresponding to each syscall that should be traced
+int 
+trace(uint64 mask) 
+{
+  struct proc *p = myproc(); 
+  p->traced_syscalls = mask; 
+  return 0; 
+
 }
 
 // Per-CPU process scheduler.

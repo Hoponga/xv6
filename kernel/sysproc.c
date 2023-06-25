@@ -71,6 +71,18 @@ sys_sleep(void)
 }
 
 uint64
+sys_trace(void) 
+{
+  int tracemask; 
+  argint(0, &tracemask);
+
+  return trace(*((uint64*)&tracemask)); 
+ 
+
+
+}
+
+uint64
 sys_kill(void)
 {
   int pid;
