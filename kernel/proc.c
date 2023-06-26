@@ -5,6 +5,7 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "defs.h"
+#include "sysinfo.h" 
 
 struct cpu cpus[NCPU];
 
@@ -17,6 +18,7 @@ struct spinlock pid_lock;
 
 extern void forkret(void);
 static void freeproc(struct proc *p);
+uint64 numfreebytes(void);  
 
 extern char trampoline[]; // trampoline.S
 
@@ -448,6 +450,36 @@ trace(uint64 mask)
 
 }
 
+// Count the number of currently active processes
+uint64 
+countprocs(void) 
+{
+  struct proc* p; 
+  uint64 count = 0; 
+  for (p = proc; p < &proc[NPROC]; p++) {
+    if (p->state != UNUSED) {
+      count++; 
+    }
+
+  }
+  return count; 
+
+}
+
+
+uint64 
+sysinfo(struct sysinfo* info) 
+{
+
+  info->freemem = numfreebytes(); 
+  
+  info->nproc = countprocs(); 
+  //printf("Address: %d", (uint64) &info); 
+  return 0xffffffffffffffff; 
+
+
+}
+
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
 // Scheduler never returns.  It loops, doing:
@@ -484,6 +516,8 @@ scheduler(void)
     }
   }
 }
+
+
 
 // Switch to scheduler.  Must hold only p->lock
 // and have changed proc->state. Saves and restores

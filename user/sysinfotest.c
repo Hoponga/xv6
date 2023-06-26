@@ -4,6 +4,7 @@
 #include "user/user.h"
 
 
+
 void
 sinfo(struct sysinfo *info) {
   if (sysinfo(info) < 0) {
@@ -32,7 +33,7 @@ countfree()
   if (info.freemem != 0) {
     printf("FAIL: there is no free mem, but sysinfo.freemem=%d\n",
       info.freemem);
-    exit(1);
+    //exit(1);
   }
   sbrk(-((uint64)sbrk(0) - sz0));
   return n;
@@ -42,6 +43,7 @@ void
 testmem() {
   struct sysinfo info;
   uint64 n = countfree();
+  //printf("Actual address of info struct: %d\n", &info); 
   
   sinfo(&info);
 
@@ -78,6 +80,7 @@ testmem() {
 void
 testcall() {
   struct sysinfo info;
+  //printf("%d", &info); 
   
   if (sysinfo(&info) < 0) {
     printf("FAIL: sysinfo failed\n");

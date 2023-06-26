@@ -6,6 +6,7 @@ struct pipe;
 struct proc;
 struct spinlock;
 struct sleeplock;
+struct sysinfo; 
 struct stat;
 struct superblock;
 
@@ -86,6 +87,7 @@ int             cpuid(void);
 void            exit(int);
 int             fork(void);
 int             trace(uint64); 
+uint64             sysinfo(struct sysinfo *); 
 int             growproc(int);
 void            proc_mapstacks(pagetable_t);
 pagetable_t     proc_pagetable(struct proc *);

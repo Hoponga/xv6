@@ -80,3 +80,19 @@ kalloc(void)
     memset((char*)r, 5, PGSIZE); // fill with junk
   return (void*)r;
 }
+
+// Count the number of free bytes (= # free pages * page size)
+// currently available. Do this by iterating over the kernel memory's free list 
+uint64
+numfreebytes(void) 
+{
+  struct run *r; 
+  r = kmem.freelist; 
+  uint64 total = 0; 
+  while (r) {
+    total += PGSIZE; 
+    r = r->next; 
+  }
+  return total; 
+
+}

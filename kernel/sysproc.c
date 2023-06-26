@@ -5,6 +5,7 @@
 #include "memlayout.h"
 #include "spinlock.h"
 #include "proc.h"
+#include "sysinfo.h"
 
 uint64
 sys_exit(void)
@@ -102,4 +103,25 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+uint64
+sys_sysinfo(void) 
+{
+  uint64 info_addr; 
+  struct sysinfo info; 
+  argaddr(0, &info_addr);
+  struct proc* p = myproc(); 
+  
+  uint64 result = sysinfo(&info); 
+  //printf("Address from sysproc: %d\n", info_addr); 
+
+  copyout(p->pagetable, info_addr, (char *)&info, sizeof(info)); 
+  //printf("Counted free bytes %d\n", info.freemem);
+  //printf("Result of copyout %d\n\n", derp); 
+
+
+  return result; 
+
+
 }
